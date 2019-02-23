@@ -3,11 +3,11 @@ import * as storage from 'electron-json-storage';
 
 export function increment() {
   return {
-    type: HOME_TEST
+    type: ADD_NOTE
   };
 }
 
-export function homeTestThunk(input) {
+export function addNoteThunk(input) {
   return async (dispatch: Dispatch, getState: GetState) => {
     // console.log(input, 'click from thunk');
     try {
