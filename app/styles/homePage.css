@@ -1,12 +1,18 @@
 #list-notes {
   background: yellow;
+  height: 100%;
+  width: 25%;
 }
 
 #home-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  min-height: 100vh;
 }
 
-#editor {
-  width: 75%;
+#editor-container {
+  position: relative;
+  background: var(--darkBlue);
+  height: 100vh;
+  flex: 1;
 }

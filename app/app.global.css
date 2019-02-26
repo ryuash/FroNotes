@@ -43,6 +43,10 @@ a:hover {
   cursor: pointer;
 } */
 
+:root {
+  --darkBlue: #3f444c;
+}
+
 body {
   margin: 0;
 }

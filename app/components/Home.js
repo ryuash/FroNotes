@@ -6,7 +6,7 @@ export default class Home extends React.Component {
     return (
       <div id="home-container">
         <div id="list-notes">Notes</div>
-        <div id="editor">
+        <div id="editor-container">
           <SplitPane split="vertical" defaultSize="50%">
             <div className="list-pane" />
             <div className="editor-pane" />
