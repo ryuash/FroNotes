@@ -2,23 +2,39 @@ import React from 'react';
 import SplitPane from 'react-split-pane';
 import ReactMarkdown from 'react-markdown';
 import Editor from './Editor';
+import { connect } from 'react-redux';
+import { updateNoteThunk } from '../actions/noteActions';
 
-export default class Home extends React.Component {
-  constructor(props) {
+class Home extends React.Component {
+  constructor() {
     super();
     this.state = {
       markdownSrc: '# Hello World'
     };
+    this.onMarkdownChange = this.onMarkdownChange.bind(this);
+  }
+  onMarkdownChange(e) {
+    console.log(e, 'i hit on change');
+    this.setState({
+      markdownSrc: e
+    });
   }
   render() {
+    console.log(this.props, 'props yo');
     return (
       <div id="home-container">
         <div id="list-notes">Notes</div>
         <div id="editor-container">
           <SplitPane split="vertical" defaultSize="50%">
+            {/* editor */}
             <div className="editor-pane">
-              <Editor className="editor" value={this.state.markdownSrc} />
+              <Editor
+                className="editor"
+                value={this.state.markdownSrc}
+                change={this.onMarkdownChange}
+              />
             </div>
+            {/* preview */}
             <div className="view-pane">
               <ReactMarkdown
                 className="result"
@@ -31,6 +47,14 @@ export default class Home extends React.Component {
     );
   }
 }
+
+const mapState = state => {
+  return {
+    currentNote: state.noteReducer.currentNote
+  };
+};
+
+export default connect(mapState)(Home);
 
 // @flow
 // import React, { Component } from 'react';

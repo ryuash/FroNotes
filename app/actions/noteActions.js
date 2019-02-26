@@ -1,11 +1,28 @@
 import type { GetState, Dispatch } from '../reducers/types';
 import * as storage from 'electron-json-storage';
 
+//actions
+export const UPDATE_NOTE = 'UPDATE_NOTE';
+
+//dispatch
 export function increment() {
   return {
     type: ADD_NOTE
   };
 }
+
+export function updateNote(note) {
+  return {
+    type: UPDATE_NOTE,
+    note
+  };
+}
+
+//thunks
+
+export const updateNoteThunk = note => dispatch => {
+  dispatch(updateNote(note));
+};
 
 export function addNoteThunk(input) {
   return async (dispatch: Dispatch, getState: GetState) => {

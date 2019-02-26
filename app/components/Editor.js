@@ -1,21 +1,28 @@
 import React from 'react';
-import CodeMirror from '@skidding/react-codemirror';
-
-require('codemirror/lib/codemirror.css');
-require('codemirror/mode/javascript/javascript');
-require('codemirror/mode/python/python');
-require('codemirror/mode/xml/xml');
-require('codemirror/mode/markdown/markdown');
-require('codemirror/theme/monokai.css');
+import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 class Editor extends React.Component {
+  constructor() {
+    super();
+    this.updateCode = this.updateCode.bind(this);
+  }
+
+  updateCode(e) {
+    this.props.change(e);
+  }
+
   render() {
-    var options = {
-      mode: 'markdown',
-      theme: 'monokai'
-    };
     return (
-      <CodeMirror value={this.props.value} options={options} height="100%" />
+      <CodeMirror
+        value={this.props.value}
+        onDblClick={this.updateCode}
+        onChange={this.updateCode}
+        options={{
+          mode: 'xml',
+          theme: 'material',
+          lineNumbers: true
+        }}
+      />
     );
   }
 }

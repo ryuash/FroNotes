@@ -256,7 +256,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.5.0",
-    "@skidding/react-codemirror": "^1.0.2",
+    "codemirror": "^5.44.0",
     "devtron": "^1.4.0",
     "electron-debug": "^2.0.0",
     "electron-json-storage": "^4.1.6",
@@ -265,6 +265,8 @@
     "eslint-config-fullstack": "^6.0.0",
     "history": "^4.7.2",
     "react": "^16.6.3",
+    "react-codemirror": "^1.0.0",
+    "react-codemirror2": "^5.1.0",
     "react-dom": "^16.6.3",
     "react-hot-loader": "^4.3.12",
     "react-markdown": "^4.0.6",
