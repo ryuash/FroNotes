@@ -3,24 +3,9 @@ import SplitPane from 'react-split-pane';
 import ReactMarkdown from 'react-markdown';
 import Editor from './Editor';
 import { connect } from 'react-redux';
-import { updateNoteThunk } from '../actions/noteActions';
 
 class Home extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      markdownSrc: '# Hello World'
-    };
-    this.onMarkdownChange = this.onMarkdownChange.bind(this);
-  }
-  onMarkdownChange(e) {
-    console.log(e, 'i hit on change');
-    this.setState({
-      markdownSrc: e
-    });
-  }
   render() {
-    console.log(this.props, 'props yo');
     return (
       <div id="home-container">
         <div id="list-notes">Notes</div>
@@ -28,17 +13,13 @@ class Home extends React.Component {
           <SplitPane split="vertical" defaultSize="50%">
             {/* editor */}
             <div className="editor-pane">
-              <Editor
-                className="editor"
-                value={this.state.markdownSrc}
-                change={this.onMarkdownChange}
-              />
+              <Editor className="editor" />
             </div>
             {/* preview */}
             <div className="view-pane">
               <ReactMarkdown
                 className="result"
-                source={this.state.markdownSrc}
+                source={this.props.currentNote}
               />
             </div>
           </SplitPane>

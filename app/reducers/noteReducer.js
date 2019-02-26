@@ -3,7 +3,7 @@ import { UPDATE_NOTE } from '../actions/noteActions';
 import type { Action } from './types';
 
 const initialState = {
-  currentNote: ''
+  currentNote: '# Hello World'
 };
 
 export default function counter(state = initialState, action: Action) {
