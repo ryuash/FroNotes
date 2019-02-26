@@ -256,6 +256,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.5.0",
+    "@skidding/react-codemirror": "^1.0.2",
     "devtron": "^1.4.0",
     "electron-debug": "^2.0.0",
     "electron-json-storage": "^4.1.6",
@@ -266,6 +267,7 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-hot-loader": "^4.3.12",
+    "react-markdown": "^4.0.6",
     "react-redux": "^5.1.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",

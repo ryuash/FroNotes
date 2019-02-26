@@ -1,16 +1,30 @@
 import React from 'react';
 import SplitPane from 'react-split-pane';
+import ReactMarkdown from 'react-markdown';
+import Editor from './Editor';
 
 export default class Home extends React.Component {
+  constructor(props) {
+    super();
+    this.state = {
+      markdownSrc: '# Hello World'
+    };
+  }
   render() {
     return (
       <div id="home-container">
         <div id="list-notes">Notes</div>
         <div id="editor-container">
           <SplitPane split="vertical" defaultSize="50%">
-            <div className="list-pane" />
-            <div className="editor-pane" />
-            <div className="view-pane" />
+            <div className="editor-pane">
+              <Editor className="editor" value={this.state.markdownSrc} />
+            </div>
+            <div className="view-pane">
+              <ReactMarkdown
+                className="result"
+                source={this.state.markdownSrc}
+              />
+            </div>
           </SplitPane>
         </div>
       </div>

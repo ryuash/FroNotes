@@ -16,3 +16,16 @@
   height: 100vh;
   flex: 1;
 }
+
+.editor-pane {
+  height: 100%;
+}
+.CodeMirror {
+  height: 100%;
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.ReactCodeMirror {
+  height: 100%;
+}
