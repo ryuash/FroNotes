@@ -15,6 +15,10 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 const db = require('electron-db');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const path = require('path');
+const os = require('os');
 
 export default class AppUpdater {
   constructor() {
@@ -67,6 +71,39 @@ app.on('ready', async () => {
   ) {
     await installExtensions();
   }
+
+  //checking if path needed for db exist if not make it before making the db
+  const platform = os.platform();
+
+  let appName = '';
+  if (JSON.parse(fs.readFileSync('package.json', 'utf-8')).productName) {
+    appName = JSON.parse(fs.readFileSync('package.json', 'utf-8')).productName;
+  } else {
+    appName = JSON.parse(fs.readFileSync('package.json', 'utf-8')).name;
+  }
+
+  let userData = '';
+
+  if (platform === 'win32') {
+    userData = path.join(process.env.APPDATA, appName);
+  } else if (platform === 'darwin') {
+    userData = path.join(
+      process.env.HOME,
+      'Library',
+      'Application Support',
+      appName
+    );
+  } else {
+    userData = path.join('var', 'local', appName);
+  }
+
+  if (!fs.existsSync(userData)) {
+    mkdirp(path.join(userData), function(err) {
+      if (err) {
+        console.log(err, 'error');
+      }
+    });
+  }
   //initilizing a json db on ready
   db.createTable('notes', (succ, msg) => {
     // succ - boolean, tells if the call is successful
@@ -79,11 +116,6 @@ app.on('ready', async () => {
     width: 1024,
     height: 728
   });
-
-  // app.setAboutPanelOptions({
-  //   applicationName: 'Electron Redo',
-  //   applicationVersion: '0.0.1',
-  // });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
