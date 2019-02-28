@@ -1,9 +1,3 @@
-#list-notes {
-  background: yellow;
-  height: 100%;
-  width: 25%;
-}
-
 #home-container {
   display: flex;
   flex-direction: row;
@@ -28,4 +22,12 @@
 
 .ReactCodeMirror {
   height: 100%;
+}
+
+.CodeMirror.cm-s-material {
+  min-height: 100vh;
+}
+
+.editor-override {
+  font-size: 1.5em;
 }
