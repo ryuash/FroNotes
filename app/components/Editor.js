@@ -1,5 +1,5 @@
 import React from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import { Controlled as CodeMirror } from 'react-codemirror2';
 import { connect } from 'react-redux';
 import { updateNoteThunk } from '../actions/noteActions';
 
@@ -18,15 +18,19 @@ class Editor extends React.Component {
   render() {
     return (
       <CodeMirror
+        className="editor-override"
         value={this.props.currentNote}
         options={{
           mode: 'xml',
           theme: 'material',
-          lineNumbers: true
+          autoScroll: false
         }}
-        onChange={(editor, data, value) => {
+        onBeforeChange={(editor, data, value) => {
           this.handleChange(editor, data, value);
         }}
+        // onChange={(editor, data, value) => {
+        //   this.handleChange(editor, data, value);
+        // }}
       />
     );
   }
