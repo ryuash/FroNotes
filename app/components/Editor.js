@@ -23,7 +23,8 @@ class Editor extends React.Component {
         options={{
           mode: 'xml',
           theme: 'material',
-          autoScroll: false
+          autoScroll: false,
+          lineWrapping: true
         }}
         onBeforeChange={(editor, data, value) => {
           this.handleChange(editor, data, value);

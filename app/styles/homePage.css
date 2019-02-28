@@ -33,3 +33,7 @@
 .CodeMirror.cm-s-material {
   min-height: 100vh;
 }
+
+.editor-override {
+  font-size: 1.5em;
+}
