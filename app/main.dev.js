@@ -73,6 +73,11 @@ app.on('ready', async () => {
     height: 728
   });
 
+  // app.setAboutPanelOptions({
+  //   applicationName: 'Electron Redo',
+  //   applicationVersion: '0.0.1',
+  // });
+
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event

@@ -1,0 +1,31 @@
+#list-notes {
+  background: yellow;
+  height: 100%;
+  width: 25%;
+}
+
+#home-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+#editor-container {
+  position: relative;
+  background: var(--darkBlue);
+  height: 100vh;
+  flex: 1;
+}
+
+.editor-pane {
+  height: 100%;
+}
+.CodeMirror {
+  height: 100%;
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.ReactCodeMirror {
+  height: 100%;
+}
