@@ -1,6 +1,6 @@
 {
   "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
+  "productName": "ElectronNotes",
   "version": "0.17.1",
   "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
   "scripts": {
@@ -265,6 +265,7 @@
     "eslint-config-fullstack": "^6.0.0",
     "history": "^4.7.2",
     "just-extend": "^4.0.2",
+    "mkdirp": "^0.5.1",
     "react": "^16.6.3",
     "react-codemirror": "^1.0.0",
     "react-codemirror2": "^5.1.0",

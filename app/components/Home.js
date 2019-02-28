@@ -1,14 +1,15 @@
 import React from 'react';
 import SplitPane from 'react-split-pane';
 import ReactMarkdown from 'react-markdown';
-import Editor from './Editor';
 import { connect } from 'react-redux';
+import Editor from './Editor';
+import ListNotes from './ListNotes';
 
 class Home extends React.Component {
   render() {
     return (
       <div id="home-container">
-        <div id="list-notes">Notes</div>
+        <ListNotes />
         <div id="editor-container">
           <SplitPane split="vertical" defaultSize="50%">
             {/* editor */}

@@ -14,6 +14,7 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+const db = require('electron-db');
 
 export default class AppUpdater {
   constructor() {
@@ -66,6 +67,12 @@ app.on('ready', async () => {
   ) {
     await installExtensions();
   }
+  //initilizing a json db on ready
+  db.createTable('notes', (succ, msg) => {
+    // succ - boolean, tells if the call is successful
+    console.log('Success: ' + succ);
+    console.log('Message: ' + msg);
+  });
 
   mainWindow = new BrowserWindow({
     show: false,
