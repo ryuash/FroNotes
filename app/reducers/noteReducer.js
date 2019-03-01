@@ -7,7 +7,6 @@ import {
 import type { Action } from './types';
 
 const initialState = {
-  currentNote: '# Hello World',
   allNotes: [],
   selectedNote: {}
 };
@@ -17,7 +16,10 @@ export default function counter(state = initialState, action: Action) {
     case SELECTED_NOTE:
       return { ...state, selectedNote: action.note };
     case UPDATE_NOTE:
-      return { ...state, currentNote: action.note };
+      return {
+        ...state,
+        selectedNote: { ...state.selectedNote, notes: action.note }
+      };
     case GET_ALL_NOTES:
       return { ...state, allNotes: action.allNotes };
     default:

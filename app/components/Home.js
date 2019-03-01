@@ -4,30 +4,42 @@ import ReactMarkdown from 'react-markdown';
 import Editor from './Editor';
 import ListNotes from './ListNotes';
 import Markdown from './Markdown';
+import Welcome from './Welcome';
+import { connect } from 'react-redux';
 
 class Home extends React.Component {
   render() {
     return (
       <div id="home-container">
         <ListNotes />
-        <div id="editor-container">
-          <SplitPane split="vertical" defaultSize="50%">
-            {/* editor */}
-            <div className="editor-pane">
-              <Editor className="editor" />
-            </div>
-            {/* preview */}
-            <div className="view-pane">
-              <Markdown />
-            </div>
-          </SplitPane>
-        </div>
+        {this.props.selectedNote.date ? (
+          <div id="editor-container">
+            <SplitPane split="vertical" defaultSize="50%">
+              {/* editor */}
+              <div className="editor-pane">
+                <Editor className="editor" />
+              </div>
+              {/* preview */}
+              <div className="view-pane">
+                <Markdown />
+              </div>
+            </SplitPane>
+          </div>
+        ) : (
+          <Welcome />
+        )}
       </div>
     );
   }
 }
 
-export default Home;
+const mapState = state => {
+  return {
+    selectedNote: state.noteReducer.selectedNote
+  };
+};
+
+export default connect(mapState)(Home);
 
 // @flow
 // import React, { Component } from 'react';
