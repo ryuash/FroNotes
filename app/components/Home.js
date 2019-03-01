@@ -1,9 +1,9 @@
 import React from 'react';
 import SplitPane from 'react-split-pane';
 import ReactMarkdown from 'react-markdown';
-import { connect } from 'react-redux';
 import Editor from './Editor';
 import ListNotes from './ListNotes';
+import Markdown from './Markdown';
 
 class Home extends React.Component {
   render() {
@@ -18,10 +18,7 @@ class Home extends React.Component {
             </div>
             {/* preview */}
             <div className="view-pane">
-              <ReactMarkdown
-                className="result"
-                source={this.props.currentNote}
-              />
+              <Markdown />
             </div>
           </SplitPane>
         </div>
@@ -30,13 +27,7 @@ class Home extends React.Component {
   }
 }
 
-const mapState = state => {
-  return {
-    currentNote: state.noteReducer.currentNote
-  };
-};
-
-export default connect(mapState)(Home);
+export default Home;
 
 // @flow
 // import React, { Component } from 'react';

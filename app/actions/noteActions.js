@@ -5,13 +5,15 @@ import type { GetState, Dispatch } from '../reducers/types';
 //actions
 export const UPDATE_NOTE = 'UPDATE_NOTE';
 export const GET_ALL_NOTES = 'GET_ALL_NOTES';
+export const SELECTED_NOTE = 'SELECTED_NOTE';
 
 //dispatch
-export function increment() {
+export const selectedNote = note => {
   return {
-    type: ADD_NOTE
+    type: SELECTED_NOTE,
+    note
   };
-}
+};
 
 export function updateNote(note) {
   return {
@@ -28,6 +30,18 @@ export function getAllNotes(allNotes) {
 }
 
 //thunks
+export const selectedNoteThunk = date => async dispatch => {
+  try {
+    db.search('notes', 'date', date, (succ, data) => {
+      if (succ) {
+        console.log(data[0], 'from db in selectednote');
+        dispatch(selectedNote(data[0]));
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const getAllNotesThunk = () => async dispatch => {
   try {
@@ -46,28 +60,3 @@ export const getAllNotesThunk = () => async dispatch => {
 export const updateNoteThunk = note => dispatch => {
   dispatch(updateNote(note));
 };
-
-// export function addNoteThunk(input) {
-//   return async (dispatch: Dispatch, getState: GetState) => {
-//     // console.log(input, 'click from thunk');
-//     try {
-//       // let allData;
-//       // await storage.getAll('input', function(error, data) {
-//       //   if (error) throw error;
-//       //   allData = data.input;
-//       //   if (Array.isArray(allData)) {
-//       //     allData.push({ value: input });
-//       //   } else {
-//       //     allData = [{ ...allData }];
-//       //   }
-//       //   storage.set('input', allData, function(errors) {
-//       //     if (errors) throw errors;
-//       //   });
-//       // });
-//     } catch (error) {
-//       console.error(error);
-//     }
-
-//     //   dispatch(increment());
-//   };
-// }

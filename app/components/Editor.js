@@ -16,10 +16,15 @@ class Editor extends React.Component {
   }
 
   render() {
+    console.log(this.props, 'props at the editor');
     return (
       <CodeMirror
         className="editor-override"
-        value={this.props.currentNote}
+        value={
+          this.props.selectedNote.date
+            ? this.props.selectedNote.notes
+            : this.props.currentNote
+        }
         options={{
           mode: 'xml',
           theme: 'material',
@@ -30,7 +35,7 @@ class Editor extends React.Component {
           this.handleChange(editor, data, value);
         }}
         // onChange={(editor, data, value) => {
-        //   this.handleChange(editor, data, value);
+        //   this.handleChange(editor, data, value)s;
         // }}
       />
     );
@@ -39,7 +44,8 @@ class Editor extends React.Component {
 
 const mapState = state => {
   return {
-    currentNote: state.noteReducer.currentNote
+    currentNote: state.noteReducer.currentNote,
+    selectedNote: state.noteReducer.selectedNote
   };
 };
 

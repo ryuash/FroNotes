@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getAllNotesThunk } from '../actions/noteActions';
+// import Pagination from 'react-js-pagination';
+import { getAllNotesThunk, selectedNoteThunk } from '../actions/noteActions';
 
 class ListNotes extends React.Component {
   constructor() {
@@ -17,16 +18,17 @@ class ListNotes extends React.Component {
     //on change make sure to the current selected file first
     //have listeners on editor and the other one
     console.log(e, 'e from click');
+    this.props.selectedNoteThunk(e);
   }
+
   render() {
-    console.log(this.props, 'props from list notes');
     return (
       <div id="list-notes">
         <h1>Them Notes</h1>
         <div>
           {this.props.allNotes.map(x => {
             return (
-              <div onClick={() => this.handleClick(x.title)} key={x.date}>
+              <div onClick={() => this.handleClick(x.date)} key={x.date}>
                 {x.title}
               </div>
             );
@@ -45,7 +47,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getAllNotesThunk: () => dispatch(getAllNotesThunk())
+    getAllNotesThunk: () => dispatch(getAllNotesThunk()),
+    selectedNoteThunk: date => dispatch(selectedNoteThunk(date))
   };
 };
 
