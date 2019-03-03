@@ -48,7 +48,6 @@ export const createNewThunk = () => async dispatch => {
       // succ - boolean, tells if the call is successful
       if (succ) {
         dispatch(createNew(newNote));
-        // console.log(msg, 'MESG');
       }
     });
   } catch (error) {
