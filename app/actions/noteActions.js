@@ -7,8 +7,15 @@ export const UPDATE_NOTE = 'UPDATE_NOTE';
 export const GET_ALL_NOTES = 'GET_ALL_NOTES';
 export const SELECTED_NOTE = 'SELECTED_NOTE';
 export const SAVE = 'SAVE';
+export const CREATE_NEW = 'CREATE_NEW';
 
 //dispatch
+export const createNew = note => {
+  return {
+    type: CREATE_NEW,
+    note
+  };
+};
 export const selectedNote = note => {
   return {
     type: SELECTED_NOTE,
@@ -31,6 +38,24 @@ export function getAllNotes(allNotes) {
 }
 
 //thunks
+export const createNewThunk = () => async dispatch => {
+  try {
+    const newNote = {
+      date: new Date().toJSON(),
+      notes: ''
+    };
+    db.insertTableContent('notes', newNote, (succ, msg) => {
+      // succ - boolean, tells if the call is successful
+      if (succ) {
+        dispatch(createNew(newNote));
+        // console.log(msg, 'MESG');
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const saveThunk = (date, note) => async dispatch => {
   try {
     await db.updateRow(
@@ -51,9 +76,9 @@ export const saveThunk = (date, note) => async dispatch => {
 };
 export const selectedNoteThunk = date => async dispatch => {
   try {
+    console.log(date, 'date from selected');
     await db.search('notes', 'date', date, (succ, data) => {
       if (succ) {
-        console.log(data[0], 'from db in selectednote');
         dispatch(selectedNote(data[0]));
       }
     });

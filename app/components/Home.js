@@ -11,9 +11,7 @@ import { saveThunk } from '../actions/noteActions';
 class Home extends React.Component {
   componentDidMount() {
     ipc.answerMain('save', async () => {
-      console.log(this.props.selectedNote, 'notes from save!');
       if (this.props.selectedNote.notes) {
-        // console.log(this.props.selectedNote.notes);
         this.props.saveThunk(
           this.props.selectedNote.date,
           this.props.selectedNote.notes

@@ -1,23 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 // import Pagination from 'react-js-pagination';
-import { getAllNotesThunk, selectedNoteThunk } from '../actions/noteActions';
+import {
+  getAllNotesThunk,
+  selectedNoteThunk,
+  createNewThunk
+} from '../actions/noteActions';
 
 class ListNotes extends React.Component {
   constructor() {
     super();
     this.handleClick = this.handleClick.bind(this);
+    this.createNew = this.createNew.bind(this);
   }
   componentDidMount() {
     this.props.getAllNotesThunk();
   }
 
+  createNew() {
+    this.props.createNewThunk();
+  }
+
   handleClick(e) {
-    //grabs the title on click.
-    //need to create a thunk to set as selected title;
-    //on change make sure to the current selected file first
-    //have listeners on editor and the other one
-    console.log(e, 'e from click');
     this.props.selectedNoteThunk(e);
   }
 
@@ -26,10 +30,11 @@ class ListNotes extends React.Component {
       <div id="list-notes">
         <h1>Them Notes</h1>
         <div>
+          <div onClick={this.createNew}>Create New</div>
           {this.props.allNotes.map(x => {
             return (
               <div onClick={() => this.handleClick(x.date)} key={x.date}>
-                {x.title}
+                {x.notes.slice(0, 15)}...
               </div>
             );
           })}
@@ -48,7 +53,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getAllNotesThunk: () => dispatch(getAllNotesThunk()),
-    selectedNoteThunk: date => dispatch(selectedNoteThunk(date))
+    selectedNoteThunk: date => dispatch(selectedNoteThunk(date)),
+    createNewThunk: () => dispatch(createNewThunk())
   };
 };
 

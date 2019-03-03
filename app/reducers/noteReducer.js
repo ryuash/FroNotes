@@ -2,7 +2,8 @@
 import {
   UPDATE_NOTE,
   GET_ALL_NOTES,
-  SELECTED_NOTE
+  SELECTED_NOTE,
+  CREATE_NEW
 } from '../actions/noteActions';
 import type { Action } from './types';
 
@@ -13,6 +14,8 @@ const initialState = {
 
 export default function counter(state = initialState, action: Action) {
   switch (action.type) {
+    case CREATE_NEW:
+      return { ...state, allNotes: [...state.allNotes, action.note] };
     case SELECTED_NOTE:
       return { ...state, selectedNote: action.note };
     case UPDATE_NOTE:
