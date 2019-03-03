@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import { connect } from 'react-redux';
-import { updateNoteThunk } from '../actions/noteActions';
+import { updateNoteThunk, trackUnsaveThunk } from '../actions/noteActions';
 
 class Editor extends React.Component {
   constructor() {
@@ -10,21 +10,17 @@ class Editor extends React.Component {
   }
 
   handleChange(editor, data, value) {
-    // console.log(value, 'e');
-    // console.log(this.props, 'rpops');
+    if (!this.props.selectedNote.save) {
+      this.props.trackUnsaveThunk(this.props.selectedNote);
+    }
     this.props.updateNoteThunk(value);
   }
 
   render() {
-    console.log(this.props, 'props at the editor');
     return (
       <CodeMirror
         className="editor-override"
-        value={
-          this.props.selectedNote.date
-            ? this.props.selectedNote.notes
-            : this.props.currentNote
-        }
+        value={this.props.selectedNote.notes}
         options={{
           mode: 'xml',
           theme: 'material',
@@ -44,14 +40,14 @@ class Editor extends React.Component {
 
 const mapState = state => {
   return {
-    currentNote: state.noteReducer.currentNote,
     selectedNote: state.noteReducer.selectedNote
   };
 };
 
 const mapDispatch = dispatch => {
   return {
-    updateNoteThunk: note => dispatch(updateNoteThunk(note))
+    updateNoteThunk: note => dispatch(updateNoteThunk(note)),
+    trackUnsaveThunk: note => dispatch(trackUnsaveThunk(note))
   };
 };
 

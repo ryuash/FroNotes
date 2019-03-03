@@ -22,10 +22,12 @@ class ListNotes extends React.Component {
   }
 
   handleClick(e) {
-    this.props.selectedNoteThunk(e);
+    const note = this.props.allNotes.filter(x => x.date === e);
+    this.props.selectedNoteThunk(note[0]);
   }
 
   render() {
+    console.log(this.props.allNotes, 'all notes notes notes');
     return (
       <div id="list-notes">
         <h1>Them Notes</h1>
@@ -34,7 +36,7 @@ class ListNotes extends React.Component {
           {this.props.allNotes.map(x => {
             return (
               <div onClick={() => this.handleClick(x.date)} key={x.date}>
-                {x.notes.slice(0, 15)}...
+                {x.notes.slice(0, 15)}...{x.save ? '*' : ''}
               </div>
             );
           })}
@@ -46,7 +48,8 @@ class ListNotes extends React.Component {
 
 const mapState = state => {
   return {
-    allNotes: state.noteReducer.allNotes
+    allNotes: state.noteReducer.allNotes,
+    selectedNote: state.noteReducer.selectedNote
   };
 };
 

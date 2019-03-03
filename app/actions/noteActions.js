@@ -8,8 +8,15 @@ export const GET_ALL_NOTES = 'GET_ALL_NOTES';
 export const SELECTED_NOTE = 'SELECTED_NOTE';
 export const SAVE = 'SAVE';
 export const CREATE_NEW = 'CREATE_NEW';
-
+export const TRACK_UNSAVE = 'TRACK_UNSAVE';
 //dispatch
+export const trackUnsave = note => {
+  return {
+    type: TRACK_UNSAVE,
+    note
+  };
+};
+
 export const createNew = note => {
   return {
     type: CREATE_NEW,
@@ -38,6 +45,14 @@ export function getAllNotes(allNotes) {
 }
 
 //thunks
+export const trackUnsaveThunk = note => async dispatch => {
+  try {
+    dispatch(trackUnsave(note));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const createNewThunk = () => async dispatch => {
   try {
     const newNote = {
@@ -73,14 +88,9 @@ export const saveThunk = (date, note) => async dispatch => {
     console.error(err);
   }
 };
-export const selectedNoteThunk = date => async dispatch => {
+export const selectedNoteThunk = note => async dispatch => {
   try {
-    console.log(date, 'date from selected');
-    await db.search('notes', 'date', date, (succ, data) => {
-      if (succ) {
-        dispatch(selectedNote(data[0]));
-      }
-    });
+    dispatch(selectedNote(note));
   } catch (error) {
     console.error(error);
   }
