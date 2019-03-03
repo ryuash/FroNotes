@@ -9,7 +9,16 @@ export const SELECTED_NOTE = 'SELECTED_NOTE';
 export const SAVE = 'SAVE';
 export const CREATE_NEW = 'CREATE_NEW';
 export const TRACK_UNSAVE = 'TRACK_UNSAVE';
+export const SAVE_ALL = 'SAVE_ALL';
 //dispatch
+
+export const saveAll = savedNotes => {
+  return {
+    type: SAVE_ALL,
+    savedNotes
+  };
+};
+
 export const save = date => {
   return {
     type: SAVE,
@@ -52,6 +61,55 @@ export function getAllNotes(allNotes) {
 }
 
 //thunks
+export const saveAllThunk = allNotes => dispatch => {
+  try {
+    // console.log('save all thunk hit');
+    for (let i = 0; i < allNotes.length; i++) {
+      // debugger;
+      if (allNotes[i].save) {
+        // console.log('yes');
+        let where = { id: allNotes[i].id };
+        let set = { notes: allNotes[i].notes };
+        // console.log(where, 'where');
+        // console.log(set, 'set');
+        db.updateRow('notes', where, set, (succ, msg) => {
+          if (succ) {
+            console.log('success saving', where, set);
+          } else {
+            console.log('error');
+          }
+        });
+        delete allNotes[i].save;
+      }
+      // console.log('no');
+    }
+    // console.log(allNotes, 'all notes before SAVEALLTHUNKIE');
+    // allNotes.forEach(x => {
+    //   if (x.save){
+    //     console.log(x.id, 'id', x.notes, 'notes');
+    //     db.updateRow(
+    //       'notes',
+    //       { id: x.id },
+    //       { notes: x.notes },
+    //       (succ, msg) => {
+    //         if (succ) {
+    //           console.log('success saving');
+    //         } else {
+    //           console.log('error');
+    //         }
+    //       }
+    //     );
+    //   //   delete x.save;
+    //   }
+    //   return x;
+    // });
+    console.log(allNotes, 'all notes after');
+    // dispatch(saveAll(allNotes));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const trackUnsaveThunk = note => async dispatch => {
   try {
     dispatch(trackUnsave(note));

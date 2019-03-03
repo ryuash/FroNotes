@@ -50,6 +50,23 @@ export default class MenuBuilder {
       label: 'Electron',
       submenu: [
         {
+          label: 'Save',
+          accelerator: 'Command+S',
+          click: async () => {
+            const win = electron.BrowserWindow.getFocusedWindow();
+            await ipc.callRenderer(win, 'save');
+          }
+        },
+        {
+          label: 'Save All',
+          accelerator: 'Command+Shift+S',
+          click: async () => {
+            const win = electron.BrowserWindow.getFocusedWindow();
+            await ipc.callRenderer(win, 'saveAll');
+          }
+        },
+        { type: 'separator' },
+        {
           label: 'About ElectronReact',
           selector: 'orderFrontStandardAboutPanel:'
         },
@@ -196,7 +213,15 @@ export default class MenuBuilder {
             accelerator: 'Ctrl+S',
             click: async () => {
               const win = electron.BrowserWindow.getFocusedWindow();
-              await ipc.callRenderer(win, 'save', 'unicorn');
+              await ipc.callRenderer(win, 'save');
+            }
+          },
+          {
+            label: '&Save All',
+            accelerator: 'Ctrl+Shift+S',
+            click: async () => {
+              const win = electron.BrowserWindow.getFocusedWindow();
+              await ipc.callRenderer(win, 'save all');
             }
           },
           { type: 'separator' },

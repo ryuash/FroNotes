@@ -5,7 +5,8 @@ import {
   SELECTED_NOTE,
   CREATE_NEW,
   TRACK_UNSAVE,
-  SAVE
+  SAVE,
+  SAVE_ALL
 } from '../actions/noteActions';
 import type { Action } from './types';
 
@@ -17,6 +18,9 @@ const initialState = {
 export default function counter(state = initialState, action: Action) {
   let newList = [...state.allNotes];
   switch (action.type) {
+    case SAVE_ALL:
+      console.log(action.savedNotes, 'reducer saved notes');
+      return { ...state, allNotes: action.savedNotes };
     case SAVE:
       newList = newList.map(x => {
         if (x.date == action.date) {
@@ -34,7 +38,11 @@ export default function counter(state = initialState, action: Action) {
       });
       return { ...state, allNotes: newList };
     case CREATE_NEW:
-      return { ...state, allNotes: [...state.allNotes, action.note] };
+      return {
+        ...state,
+        allNotes: [...state.allNotes, action.note],
+        selectedNote: action.note
+      };
     case SELECTED_NOTE:
       return { ...state, selectedNote: action.note };
     case UPDATE_NOTE:

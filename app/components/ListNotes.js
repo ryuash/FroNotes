@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 // import Pagination from 'react-js-pagination';
+import ipc from 'electron-better-ipc';
 import {
   getAllNotesThunk,
   selectedNoteThunk,
-  createNewThunk
+  createNewThunk,
+  saveThunk,
+  saveAllThunk
 } from '../actions/noteActions';
 
 class ListNotes extends React.Component {
@@ -15,6 +18,21 @@ class ListNotes extends React.Component {
   }
   componentDidMount() {
     this.props.getAllNotesThunk();
+    ipc.answerMain('save', async () => {
+      if (this.props.selectedNote.date) {
+        this.props.saveThunk(
+          this.props.selectedNote.date,
+          this.props.selectedNote.notes
+        );
+      }
+    });
+
+    ipc.answerMain('save all', async () => {
+      if (this.props.selectedNote.date) {
+        // console.log(this.props.allNotes, 'ALL NOTES BEFORE ALL SAVE');
+        this.props.saveAllThunk(this.props.allNotes);
+      }
+    });
   }
 
   createNew() {
@@ -27,7 +45,7 @@ class ListNotes extends React.Component {
   }
 
   render() {
-    console.log(this.props.allNotes, 'all notes notes notes');
+    // console.log(this.props.allNotes, 'allnotes render from list notes');
     return (
       <div id="list-notes">
         <h1>Them Notes</h1>
@@ -59,7 +77,9 @@ const mapDispatch = dispatch => {
   return {
     getAllNotesThunk: () => dispatch(getAllNotesThunk()),
     selectedNoteThunk: date => dispatch(selectedNoteThunk(date)),
-    createNewThunk: () => dispatch(createNewThunk())
+    createNewThunk: () => dispatch(createNewThunk()),
+    saveThunk: (date, newNote) => dispatch(saveThunk(date, newNote)),
+    saveAllThunk: allNotes => dispatch(saveAllThunk(allNotes))
   };
 };
 

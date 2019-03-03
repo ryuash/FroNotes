@@ -6,19 +6,23 @@ import ListNotes from './ListNotes';
 import Markdown from './Markdown';
 import Welcome from './Welcome';
 import { connect } from 'react-redux';
-import { saveThunk } from '../actions/noteActions';
+import { saveThunk, saveAllThunk } from '../actions/noteActions';
 
 class Home extends React.Component {
-  componentDidMount() {
-    ipc.answerMain('save', async () => {
-      if (this.props.selectedNote.notes) {
-        this.props.saveThunk(
-          this.props.selectedNote.date,
-          this.props.selectedNote.notes
-        );
-      }
-    });
-  }
+  // componentDidMount() {
+  //   ipc.answerMain('save', async () => {
+  //     if (this.props.selectedNote.notes) {
+  //       this.props.saveThunk(
+  //         this.props.selectedNote.date,
+  //         this.props.selectedNote.notes
+  //       );
+  //     }
+  //   });
+
+  //   ipc.answerMain('save all', async() => {
+  //     this.props.saveAllThunk();
+  //   });
+  // }
 
   render() {
     return (
@@ -53,7 +57,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    saveThunk: (date, newNote) => dispatch(saveThunk(date, newNote))
+    saveThunk: (date, newNote) => dispatch(saveThunk(date, newNote)),
+    saveAllThunk: () => dispatch(saveAllThunk())
   };
 };
 
