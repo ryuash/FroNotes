@@ -10,6 +10,13 @@ export const SAVE = 'SAVE';
 export const CREATE_NEW = 'CREATE_NEW';
 export const TRACK_UNSAVE = 'TRACK_UNSAVE';
 //dispatch
+export const save = date => {
+  return {
+    type: SAVE,
+    date
+  };
+};
+
 export const trackUnsave = note => {
   return {
     type: TRACK_UNSAVE,
@@ -84,6 +91,7 @@ export const saveThunk = (date, note) => async dispatch => {
         }
       }
     );
+    dispatch(save(date));
   } catch (err) {
     console.error(err);
   }

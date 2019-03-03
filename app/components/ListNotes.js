@@ -33,13 +33,15 @@ class ListNotes extends React.Component {
         <h1>Them Notes</h1>
         <div>
           <div onClick={this.createNew}>Create New</div>
-          {this.props.allNotes.map(x => {
-            return (
-              <div onClick={() => this.handleClick(x.date)} key={x.date}>
-                {x.notes.slice(0, 15)}...{x.save ? '*' : ''}
-              </div>
-            );
-          })}
+          {this.props.allNotes
+            .map(x => {
+              return (
+                <div onClick={() => this.handleClick(x.date)} key={x.date}>
+                  {x.notes.slice(0, 15)}...{x.save ? '*' : ''}
+                </div>
+              );
+            })
+            .reverse()}
         </div>
       </div>
     );
