@@ -4076,6 +4076,11 @@ ejs@~2.5.6:
   version "2.5.9"
   resolved "https://registry.npmjs.org/ejs/-/ejs-2.5.9.tgz#7ba254582a560d267437109a68354112475b0ce5"
 
+electron-better-ipc@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/electron-better-ipc/-/electron-better-ipc-0.1.2.tgz#8ff9d216d0a70924bca466699bcb50c5d42911e5"
+  integrity sha512-tn00v9+/kcln2nV7GCffXzaoVUMoH7HHQj0Sya43U7xt2bqgjT1DF5T3+nkG2CChkuCE/TgVTQyFOv2jm0Vogg==
+
 electron-builder@^20.34.0:
   version "20.34.0"
   resolved "https://registry.npmjs.org/electron-builder/-/electron-builder-20.34.0.tgz#eed773dbb9907c9b17e1399af97d438da267f8f0"

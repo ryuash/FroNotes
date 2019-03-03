@@ -6,6 +6,7 @@ import type { GetState, Dispatch } from '../reducers/types';
 export const UPDATE_NOTE = 'UPDATE_NOTE';
 export const GET_ALL_NOTES = 'GET_ALL_NOTES';
 export const SELECTED_NOTE = 'SELECTED_NOTE';
+export const SAVE = 'SAVE';
 
 //dispatch
 export const selectedNote = note => {
@@ -30,9 +31,27 @@ export function getAllNotes(allNotes) {
 }
 
 //thunks
+export const saveThunk = (date, note) => async dispatch => {
+  try {
+    await db.updateRow(
+      'notes',
+      { date: date },
+      { notes: note },
+      (succ, msg) => {
+        if (succ) {
+          console.log('success saving');
+        } else {
+          console.log('error');
+        }
+      }
+    );
+  } catch (err) {
+    console.error(err);
+  }
+};
 export const selectedNoteThunk = date => async dispatch => {
   try {
-    db.search('notes', 'date', date, (succ, data) => {
+    await db.search('notes', 'date', date, (succ, data) => {
       if (succ) {
         console.log(data[0], 'from db in selectednote');
         dispatch(selectedNote(data[0]));

@@ -1,5 +1,6 @@
 // @flow
-import { app, Menu, shell, BrowserWindow } from 'electron';
+import electron, { app, Menu, shell, BrowserWindow } from 'electron';
+import ipc from 'electron-better-ipc';
 
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
@@ -43,6 +44,7 @@ export default class MenuBuilder {
     });
   }
 
+  //macs
   buildDarwinTemplate() {
     const subMenuAbout = {
       label: 'Electron',
@@ -179,7 +181,7 @@ export default class MenuBuilder {
 
     return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
   }
-
+  //windows and others
   buildDefaultTemplate() {
     const templateDefault = [
       {
@@ -189,6 +191,15 @@ export default class MenuBuilder {
             label: '&Open',
             accelerator: 'Ctrl+O'
           },
+          {
+            label: '&Save',
+            accelerator: 'Ctrl+S',
+            click: async () => {
+              const win = electron.BrowserWindow.getFocusedWindow();
+              await ipc.callRenderer(win, 'save', 'unicorn');
+            }
+          },
+          { type: 'separator' },
           {
             label: '&Close',
             accelerator: 'Ctrl+W',
