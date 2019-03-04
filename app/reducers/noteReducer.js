@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable eqeqeq */
 // import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../actions/counter';
 import {
   UPDATE_NOTE,
@@ -6,7 +8,8 @@ import {
   CREATE_NEW,
   TRACK_UNSAVE,
   SAVE,
-  SAVE_ALL
+  SAVE_ALL,
+  DELETE_NOTE
 } from '../actions/noteActions';
 import type { Action } from './types';
 
@@ -17,9 +20,12 @@ const initialState = {
 
 export default function counter(state = initialState, action: Action) {
   let newList = [...state.allNotes];
+  let newSelected = { ...state.selectedNote };
   switch (action.type) {
+    case DELETE_NOTE:
+      newList = newList.filter(x => x.id !== action.id);
+      return { ...state, allNotes: newList };
     case SAVE_ALL:
-      console.log(action.savedNotes, 'reducer saved notes');
       return { ...state, allNotes: action.savedNotes };
     case SAVE:
       newList = newList.map(x => {
@@ -28,7 +34,8 @@ export default function counter(state = initialState, action: Action) {
         }
         return x;
       });
-      return { ...state, allNotes: newList };
+      delete newSelected.save;
+      return { ...state, allNotes: newList, selectedNote: newSelected };
     case TRACK_UNSAVE:
       newList = newList.map(x => {
         if (x.date == action.note.date) {

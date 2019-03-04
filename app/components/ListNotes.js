@@ -7,7 +7,8 @@ import {
   selectedNoteThunk,
   createNewThunk,
   saveThunk,
-  saveAllThunk
+  saveAllThunk,
+  deleteNoteThunk
 } from '../actions/noteActions';
 
 class ListNotes extends React.Component {
@@ -15,6 +16,7 @@ class ListNotes extends React.Component {
     super();
     this.handleClick = this.handleClick.bind(this);
     this.createNew = this.createNew.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
   componentDidMount() {
     this.props.getAllNotesThunk();
@@ -44,6 +46,11 @@ class ListNotes extends React.Component {
     this.props.selectedNoteThunk(note[0]);
   }
 
+  handleDelete(e) {
+    // console.log(e, 'delete');
+    this.props.deleteNoteThunk(e);
+  }
+
   render() {
     // console.log(this.props.allNotes, 'allnotes render from list notes');
     return (
@@ -54,8 +61,11 @@ class ListNotes extends React.Component {
           {this.props.allNotes
             .map(x => {
               return (
-                <div onClick={() => this.handleClick(x.date)} key={x.date}>
-                  {x.notes.slice(0, 15)}...{x.save ? '*' : ''}
+                <div key={x.date}>
+                  <div onClick={() => this.handleClick(x.date)}>
+                    {x.notes.slice(0, 15)}...{x.save ? '*' : ''}
+                  </div>
+                  <div onClick={() => this.handleDelete(x.id)}>delete</div>
                 </div>
               );
             })
@@ -79,7 +89,8 @@ const mapDispatch = dispatch => {
     selectedNoteThunk: date => dispatch(selectedNoteThunk(date)),
     createNewThunk: () => dispatch(createNewThunk()),
     saveThunk: (date, newNote) => dispatch(saveThunk(date, newNote)),
-    saveAllThunk: allNotes => dispatch(saveAllThunk(allNotes))
+    saveAllThunk: allNotes => dispatch(saveAllThunk(allNotes)),
+    deleteNoteThunk: date => dispatch(deleteNoteThunk(date))
   };
 };
 

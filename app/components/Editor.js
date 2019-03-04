@@ -10,7 +10,7 @@ class Editor extends React.Component {
   }
 
   handleChange(editor, data, value) {
-    if (!this.props.selectedNote.save) {
+    if (this.props.selectedNote.hasOwnProperty('save') === false) {
       this.props.trackUnsaveThunk(this.props.selectedNote);
     }
     this.props.updateNoteThunk(value);

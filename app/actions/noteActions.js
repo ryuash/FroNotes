@@ -10,7 +10,15 @@ export const SAVE = 'SAVE';
 export const CREATE_NEW = 'CREATE_NEW';
 export const TRACK_UNSAVE = 'TRACK_UNSAVE';
 export const SAVE_ALL = 'SAVE_ALL';
+export const DELETE_NOTE = 'DELETE_NOTE';
 //dispatch
+
+export const deleteNote = id => {
+  return {
+    type: DELETE_NOTE,
+    id
+  };
+};
 
 export const saveAll = savedNotes => {
   return {
@@ -61,17 +69,13 @@ export function getAllNotes(allNotes) {
 }
 
 //thunks
-export const saveAllThunk = allNotes => dispatch => {
+
+export const saveAllThunk = allNotes => async dispatch => {
   try {
-    // console.log('save all thunk hit');
     for (let i = 0; i < allNotes.length; i++) {
-      // debugger;
       if (allNotes[i].save) {
-        // console.log('yes');
         let where = { id: allNotes[i].id };
         let set = { notes: allNotes[i].notes };
-        // console.log(where, 'where');
-        // console.log(set, 'set');
         db.updateRow('notes', where, set, (succ, msg) => {
           if (succ) {
             console.log('success saving', where, set);
@@ -81,30 +85,9 @@ export const saveAllThunk = allNotes => dispatch => {
         });
         delete allNotes[i].save;
       }
-      // console.log('no');
     }
-    // console.log(allNotes, 'all notes before SAVEALLTHUNKIE');
-    // allNotes.forEach(x => {
-    //   if (x.save){
-    //     console.log(x.id, 'id', x.notes, 'notes');
-    //     db.updateRow(
-    //       'notes',
-    //       { id: x.id },
-    //       { notes: x.notes },
-    //       (succ, msg) => {
-    //         if (succ) {
-    //           console.log('success saving');
-    //         } else {
-    //           console.log('error');
-    //         }
-    //       }
-    //     );
-    //   //   delete x.save;
-    //   }
-    //   return x;
-    // });
     console.log(allNotes, 'all notes after');
-    // dispatch(saveAll(allNotes));
+    dispatch(saveAll(allNotes));
   } catch (err) {
     console.error(err);
   }
@@ -168,9 +151,23 @@ export const getAllNotesThunk = () => async dispatch => {
       // succ - boolean, tells if the call is successful
       // data - array of objects that represents the rows.
       if (succ) {
+        // console.log('i made it');
         dispatch(getAllNotes(data));
       }
     });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const deleteNoteThunk = id => async dispatch => {
+  try {
+    const stringId = { id };
+    // console.log(stringId);
+    db.deleteRow('notes', stringId, (succ, msg) => {
+      console.log(msg);
+    });
+    dispatch(deleteNote(id));
   } catch (err) {
     console.error(err);
   }
