@@ -15,6 +15,7 @@ export const CREATE_NEW = 'CREATE_NEW';
 export const TRACK_UNSAVE = 'TRACK_UNSAVE';
 export const SAVE_ALL = 'SAVE_ALL';
 export const DELETE_NOTE = 'DELETE_NOTE';
+export const EXPORT = 'EXPORT';
 //dispatch
 
 export const deleteNote = id => {
@@ -73,6 +74,9 @@ export function getAllNotes(allNotes) {
 }
 
 //thunks
+export const exportThunk = note => dispatch => {
+  console.log(note, 'current note');
+};
 
 export const saveAllThunk = notes => dispatch => {
   try {

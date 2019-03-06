@@ -1,5 +1,5 @@
 // @flow
-import electron, { app, Menu, shell, BrowserWindow } from 'electron';
+import electron, { app, Menu, shell, BrowserWindow, dialog } from 'electron';
 import ipc from 'electron-better-ipc';
 
 export default class MenuBuilder {
@@ -222,6 +222,29 @@ export default class MenuBuilder {
             click: async () => {
               const win = electron.BrowserWindow.getFocusedWindow();
               await ipc.callRenderer(win, 'save all');
+            }
+          },
+          {
+            label: '&Export',
+            click: async () => {
+              //open a new dialoge here
+              const win = electron.BrowserWindow.getFocusedWindow();
+              let notes = await ipc.callRenderer(win, 'export');
+              console.log(notes, 'notes from ipc');
+              let options = {
+                title: 'Export As...',
+                buttonLabel: 'export',
+                defaultPath: 'C:\\Untitled',
+                filters: [
+                  { name: 'Pdf', extensions: ['pdf'] },
+                  { name: 'Markdown', extensions: ['markdown', 'md'] },
+                  { name: 'Text', extensions: ['txt'] },
+                  { name: 'Custom File Type', extensions: ['as'] },
+                  { name: 'All Files', extensions: ['*'] }
+                ]
+              };
+              let filePath = dialog.showSaveDialog(this.mainWindow, options);
+              console.log(filePath, 'filepath');
             }
           },
           { type: 'separator' },

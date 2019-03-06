@@ -8,7 +8,8 @@ import {
   createNewThunk,
   saveThunk,
   saveAllThunk,
-  deleteNoteThunk
+  deleteNoteThunk,
+  exportThunk
 } from '../actions/noteActions';
 
 class ListNotes extends React.Component {
@@ -33,6 +34,16 @@ class ListNotes extends React.Component {
       if (this.props.selectedNote.date) {
         // console.log(this.props.allNotes, 'ALL NOTES BEFORE ALL SAVE');
         this.props.saveAllThunk(this.props.allNotes);
+      }
+    });
+
+    ipc.answerMain('export', async () => {
+      console.log('hits export');
+      if (this.props.selectedNote.date) {
+        // this.props.exportThunk(this.props.selectedNote.notes);
+        return this.props.selectedNote.notes;
+      } else {
+        console.log('no note selected');
       }
     });
   }
@@ -90,7 +101,8 @@ const mapDispatch = dispatch => {
     createNewThunk: () => dispatch(createNewThunk()),
     saveThunk: (date, newNote) => dispatch(saveThunk(date, newNote)),
     saveAllThunk: allNotes => dispatch(saveAllThunk(allNotes)),
-    deleteNoteThunk: date => dispatch(deleteNoteThunk(date))
+    deleteNoteThunk: date => dispatch(deleteNoteThunk(date)),
+    exportThunk: note => dispatch(exportThunk(note))
   };
 };
 
