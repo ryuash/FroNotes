@@ -1,5 +1,9 @@
 const db = require('electron-db');
 import type { GetState, Dispatch } from '../reducers/types';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import jsonfile from 'jsonfile';
 // import * as storage from 'electron-json-storage';
 
 //actions
@@ -70,24 +74,52 @@ export function getAllNotes(allNotes) {
 
 //thunks
 
-export const saveAllThunk = allNotes => async dispatch => {
+export const saveAllThunk = notes => dispatch => {
   try {
-    for (let i = 0; i < allNotes.length; i++) {
-      if (allNotes[i].save) {
-        let where = { id: allNotes[i].id };
-        let set = { notes: allNotes[i].notes };
-        db.updateRow('notes', where, set, (succ, msg) => {
-          if (succ) {
-            console.log('success saving', where, set);
-          } else {
-            console.log('error');
-          }
-        });
-        delete allNotes[i].save;
-      }
+    let allNotes = notes;
+    const platform = os.platform();
+
+    let appName = '';
+    if (JSON.parse(fs.readFileSync('package.json', 'utf-8')).productName) {
+      appName = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
+        .productName;
+    } else {
+      appName = JSON.parse(fs.readFileSync('package.json', 'utf-8')).name;
     }
-    console.log(allNotes, 'all notes after');
-    dispatch(saveAll(allNotes));
+
+    let userData = '';
+
+    if (platform === 'win32') {
+      userData = path.join(process.env.APPDATA, appName);
+    } else if (platform === 'darwin') {
+      userData = path.join(
+        process.env.HOME,
+        'Library',
+        'Application Support',
+        appName
+      );
+    } else {
+      userData = path.join('var', 'local', appName);
+    }
+    let fname = path.join(userData, 'notes' + '.json');
+    let exists = fs.existsSync(fname);
+    if (exists) {
+      let table = JSON.parse(fs.readFileSync(fname));
+      allNotes.forEach(x => {
+        if (x.save) {
+          for (let i = 0; i < table.notes.length; i++) {
+            if (table.notes[i].date === x.date) {
+              table.notes[i].notes = x.notes;
+              delete x.save;
+            }
+          }
+        }
+      });
+      jsonfile.writeFile(fname, table, { spaces: 2 }, function(err) {
+        console.log(err);
+      });
+      dispatch(saveAll(allNotes));
+    }
   } catch (err) {
     console.error(err);
   }

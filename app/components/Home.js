@@ -9,21 +9,6 @@ import { connect } from 'react-redux';
 import { saveThunk, saveAllThunk } from '../actions/noteActions';
 
 class Home extends React.Component {
-  // componentDidMount() {
-  //   ipc.answerMain('save', async () => {
-  //     if (this.props.selectedNote.notes) {
-  //       this.props.saveThunk(
-  //         this.props.selectedNote.date,
-  //         this.props.selectedNote.notes
-  //       );
-  //     }
-  //   });
-
-  //   ipc.answerMain('save all', async() => {
-  //     this.props.saveAllThunk();
-  //   });
-  // }
-
   render() {
     return (
       <div id="home-container">

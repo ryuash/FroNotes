@@ -26,7 +26,12 @@ export default function counter(state = initialState, action: Action) {
       newList = newList.filter(x => x.id !== action.id);
       return { ...state, allNotes: newList };
     case SAVE_ALL:
-      return { ...state, allNotes: action.savedNotes };
+      delete newSelected.save;
+      return {
+        ...state,
+        allNotes: action.savedNotes,
+        selectedNote: newSelected
+      };
     case SAVE:
       newList = newList.map(x => {
         if (x.date == action.date) {
