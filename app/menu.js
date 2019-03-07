@@ -1,6 +1,8 @@
 // @flow
 import electron, { app, Menu, shell, BrowserWindow, dialog } from 'electron';
+import markdownpdf from 'markdown-pdf';
 import ipc from 'electron-better-ipc';
+import fs from 'fs';
 
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
@@ -230,21 +232,38 @@ export default class MenuBuilder {
               //open a new dialoge here
               const win = electron.BrowserWindow.getFocusedWindow();
               let notes = await ipc.callRenderer(win, 'export');
-              console.log(notes, 'notes from ipc');
+              console.log(notes, 'notes');
+              // console.log(notes, 'notes from ipc');
               let options = {
                 title: 'Export As...',
                 buttonLabel: 'export',
                 defaultPath: 'C:\\Untitled',
                 filters: [
                   { name: 'Pdf', extensions: ['pdf'] },
-                  { name: 'Markdown', extensions: ['markdown', 'md'] },
+                  { name: 'Markdown', extensions: ['md'] },
                   { name: 'Text', extensions: ['txt'] },
                   { name: 'Custom File Type', extensions: ['as'] },
                   { name: 'All Files', extensions: ['*'] }
                 ]
               };
               let filePath = dialog.showSaveDialog(this.mainWindow, options);
+              // await fs.appendFile(filePath, notes, (err) => {
+              //   if (err) throw err;
+              //   console.log('The "data to append" was appended to file!');
+              // });
+
+              // var md = 'foo===\n* bar\n* baz\n\nLorem ipsum dolor sit'
+              //   , outputPath = '/path/to/doc.pdf';
+
+              var md = 'foo===\n* bar\n* baz\n\nLorem ipsum dolor sit';
               console.log(filePath, 'filepath');
+              console.log(typeof filePath, 'type');
+
+              markdownpdf()
+                .from.string(md)
+                .to(filePath, function() {
+                  console.log('Created', filePath);
+                });
             }
           },
           { type: 'separator' },

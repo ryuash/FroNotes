@@ -41,7 +41,7 @@ class ListNotes extends React.Component {
       console.log('hits export');
       if (this.props.selectedNote.date) {
         // this.props.exportThunk(this.props.selectedNote.notes);
-        return this.props.selectedNote.notes;
+        return this.props.selectedNote;
       } else {
         console.log('no note selected');
       }
