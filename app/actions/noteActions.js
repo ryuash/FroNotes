@@ -132,11 +132,11 @@ export const trackUnsaveThunk = note => async dispatch => {
   }
 };
 
-export const createNewThunk = () => async dispatch => {
+export const createNewThunk = (note = '') => async dispatch => {
   try {
     const newNote = {
       date: new Date().toJSON(),
-      notes: ''
+      notes: note
     };
     db.insertTableContent('notes', newNote, (succ, msg) => {
       // succ - boolean, tells if the call is successful

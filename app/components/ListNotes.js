@@ -23,7 +23,8 @@ class ListNotes extends React.Component {
     this.props.getAllNotesThunk();
 
     ipc.answerMain('open', async data => {
-      console.log(data, 'i hit open');
+      // console.log(data, 'i hit open');
+      this.props.createNewThunk(data);
     });
 
     ipc.answerMain('save', async () => {
@@ -102,7 +103,7 @@ const mapDispatch = dispatch => {
   return {
     getAllNotesThunk: () => dispatch(getAllNotesThunk()),
     selectedNoteThunk: date => dispatch(selectedNoteThunk(date)),
-    createNewThunk: () => dispatch(createNewThunk()),
+    createNewThunk: note => dispatch(createNewThunk(note)),
     saveThunk: (date, newNote) => dispatch(saveThunk(date, newNote)),
     saveAllThunk: allNotes => dispatch(saveAllThunk(allNotes)),
     deleteNoteThunk: date => dispatch(deleteNoteThunk(date)),
