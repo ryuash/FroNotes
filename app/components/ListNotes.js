@@ -21,6 +21,11 @@ class ListNotes extends React.Component {
   }
   componentDidMount() {
     this.props.getAllNotesThunk();
+
+    ipc.answerMain('open', async data => {
+      console.log(data, 'i hit open');
+    });
+
     ipc.answerMain('save', async () => {
       if (this.props.selectedNote.date) {
         this.props.saveThunk(
@@ -38,12 +43,11 @@ class ListNotes extends React.Component {
     });
 
     ipc.answerMain('export', async () => {
-      console.log('hits export');
       if (this.props.selectedNote.date) {
         // this.props.exportThunk(this.props.selectedNote.notes);
         return this.props.selectedNote;
       } else {
-        console.log('no note selected');
+        return false;
       }
     });
   }
