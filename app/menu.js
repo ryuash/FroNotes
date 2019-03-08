@@ -60,11 +60,38 @@ export default class MenuBuilder {
           }
         },
         {
-          label: 'Save All',
-          accelerator: 'Command+Shift+S',
+          label: '&Save All',
+          accelerator: 'Ctrl+Shift+S',
           click: async () => {
             const win = electron.BrowserWindow.getFocusedWindow();
-            await ipc.callRenderer(win, 'saveAll');
+            await ipc.callRenderer(win, 'save all');
+          }
+        },
+        {
+          label: '&Export',
+          click: async () => {
+            //open a new dialoge here
+            try {
+              const win = electron.BrowserWindow.getFocusedWindow();
+              let notes = await ipc.callRenderer(win, 'export');
+              let options = {
+                title: 'Export As...',
+                buttonLabel: 'export',
+                filters: [
+                  { name: 'Markdown', extensions: ['md'] },
+                  { name: 'Text', extensions: ['txt'] },
+                  { name: 'Custom File Type', extensions: ['as'] },
+                  { name: 'All Files', extensions: ['*'] }
+                ]
+              };
+              let filePath = dialog.showSaveDialog(this.mainWindow, options);
+              fs.writeFileSync(filePath, notes.notes, 'binary', err => {
+                console.error(err);
+              });
+              console.log('Success in writing file');
+            } catch (err) {
+              console.error(err);
+            }
           }
         },
         { type: 'separator' },
@@ -230,40 +257,28 @@ export default class MenuBuilder {
             label: '&Export',
             click: async () => {
               //open a new dialoge here
-              const win = electron.BrowserWindow.getFocusedWindow();
-              let notes = await ipc.callRenderer(win, 'export');
-              console.log(notes, 'notes');
-              // console.log(notes, 'notes from ipc');
-              let options = {
-                title: 'Export As...',
-                buttonLabel: 'export',
-                defaultPath: 'C:\\Untitled',
-                filters: [
-                  { name: 'Pdf', extensions: ['pdf'] },
-                  { name: 'Markdown', extensions: ['md'] },
-                  { name: 'Text', extensions: ['txt'] },
-                  { name: 'Custom File Type', extensions: ['as'] },
-                  { name: 'All Files', extensions: ['*'] }
-                ]
-              };
-              let filePath = dialog.showSaveDialog(this.mainWindow, options);
-              // await fs.appendFile(filePath, notes, (err) => {
-              //   if (err) throw err;
-              //   console.log('The "data to append" was appended to file!');
-              // });
-
-              // var md = 'foo===\n* bar\n* baz\n\nLorem ipsum dolor sit'
-              //   , outputPath = '/path/to/doc.pdf';
-
-              var md = 'foo===\n* bar\n* baz\n\nLorem ipsum dolor sit';
-              console.log(filePath, 'filepath');
-              console.log(typeof filePath, 'type');
-
-              markdownpdf()
-                .from.string(md)
-                .to(filePath, function() {
-                  console.log('Created', filePath);
+              try {
+                const win = electron.BrowserWindow.getFocusedWindow();
+                let notes = await ipc.callRenderer(win, 'export');
+                let options = {
+                  title: 'Export As...',
+                  buttonLabel: 'export',
+                  defaultPath: 'C:\\Untitled',
+                  filters: [
+                    { name: 'Markdown', extensions: ['md'] },
+                    { name: 'Text', extensions: ['txt'] },
+                    { name: 'Custom File Type', extensions: ['as'] },
+                    { name: 'All Files', extensions: ['*'] }
+                  ]
+                };
+                let filePath = dialog.showSaveDialog(this.mainWindow, options);
+                fs.writeFileSync(filePath, notes.notes, 'binary', err => {
+                  console.error(err);
                 });
+                console.log('Success in writing file');
+              } catch (err) {
+                console.error(err);
+              }
             }
           },
           { type: 'separator' },
