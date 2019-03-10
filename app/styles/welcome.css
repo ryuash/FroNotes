@@ -11,6 +11,7 @@
 
 #welcomeContainer h1 {
   margin: 0;
+  font-size: 3em;
 }
 
 #welcomeContainer {
@@ -42,5 +43,6 @@
 .view-pane {
   max-height: 100vh;
   overflow-y: auto;
-  padding: 0.5em;
+  padding: 0 0.5em;
+  color: var(--hover);
 }

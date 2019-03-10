@@ -5,7 +5,7 @@ const Welcome = props => {
     <div id="welcomeContainer">
       <h1>FroNotes</h1>
       <div className="logo">
-        <img src="./img/black.png" />
+        <img src="./img/line-only.png" />
       </div>
       <div id="welcome-notes">
         <p>Ctrl+O to Open note</p>
