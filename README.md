@@ -1,4 +1,11 @@
-<div align="center">
+<h1>FroNotes</h1>
+<p>A simple markdown note taking app create with electron</p>
+<img src="./app/img/one.png"
+     alt="example 1"/>
+<img src="./app/img/two.png"
+     alt="example 1"/>
+
+<!-- <div align="center">
 <br>
 <img src="https://user-images.githubusercontent.com/12294525/44203609-77d50800-a147-11e8-98f0-f2403527abdc.png" width="600px" />
 
@@ -262,4 +269,4 @@ MIT © [Electron React Boilerplate](https://github.com/electron-react-boilerplat
 [david_img]: https://img.shields.io/david/electron-react-boilerplate/electron-react-boilerplate.svg
 [david_site]: https://david-dm.org/electron-react-boilerplate/electron-react-boilerplate
 [david_img_dev]: https://david-dm.org/electron-react-boilerplate/electron-react-boilerplate/dev-status.svg
-[david_site_dev]: https://david-dm.org/electron-react-boilerplate/electron-react-boilerplate?type=dev
+[david_site_dev]: https://david-dm.org/electron-react-boilerplate/electron-react-boilerplate?type=dev -->

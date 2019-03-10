@@ -1,5 +1,9 @@
 // @flow
-import { app, Menu, shell, BrowserWindow } from 'electron';
+import electron, { app, Menu, shell, BrowserWindow, dialog } from 'electron';
+import markdownpdf from 'markdown-pdf';
+import ipc from 'electron-better-ipc';
+import fs from 'fs';
+import marked from 'marked';
 
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
@@ -43,10 +47,55 @@ export default class MenuBuilder {
     });
   }
 
+  //macs
   buildDarwinTemplate() {
     const subMenuAbout = {
       label: 'Electron',
       submenu: [
+        {
+          label: 'Save',
+          accelerator: 'Command+S',
+          click: async () => {
+            const win = electron.BrowserWindow.getFocusedWindow();
+            await ipc.callRenderer(win, 'save');
+          }
+        },
+        {
+          label: 'Save All',
+          accelerator: 'Ctrl+Shift+S',
+          click: async () => {
+            const win = electron.BrowserWindow.getFocusedWindow();
+            await ipc.callRenderer(win, 'save all');
+          }
+        },
+        {
+          label: 'Export',
+          click: async () => {
+            //open a new dialoge here
+            try {
+              const win = electron.BrowserWindow.getFocusedWindow();
+              let notes = await ipc.callRenderer(win, 'export');
+              let options = {
+                title: 'Export As...',
+                buttonLabel: 'export',
+                filters: [
+                  { name: 'Markdown', extensions: ['md'] },
+                  { name: 'Text', extensions: ['txt'] },
+                  { name: 'Custom File Type', extensions: ['as'] },
+                  { name: 'All Files', extensions: ['*'] }
+                ]
+              };
+              let filePath = dialog.showSaveDialog(this.mainWindow, options);
+              fs.writeFileSync(filePath, notes.notes, 'binary', err => {
+                console.error(err);
+              });
+              console.log('Success in writing file');
+            } catch (err) {
+              console.error(err);
+            }
+          }
+        },
+        { type: 'separator' },
         {
           label: 'About ElectronReact',
           selector: 'orderFrontStandardAboutPanel:'
@@ -179,7 +228,7 @@ export default class MenuBuilder {
 
     return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
   }
-
+  //windows and others
   buildDefaultTemplate() {
     const templateDefault = [
       {
@@ -187,8 +236,87 @@ export default class MenuBuilder {
         submenu: [
           {
             label: '&Open',
-            accelerator: 'Ctrl+O'
+            accelerator: 'Ctrl+O',
+            click: async () => {
+              const options = {
+                title: 'Open...',
+                defaultPath: 'C:\\',
+                buttonLabel: 'Open',
+                filters: [
+                  { name: 'Markdown/Text', extensions: ['md', 'txt'] },
+                  { name: 'All Files', extensions: ['*'] }
+                ],
+                properties: ['openFile']
+              };
+              //this returns an array so get the first element
+              // console.log(marked(data), 'data from my file'); //this gives me html which is cool
+              let openPath = dialog.showOpenDialog(this.mainWindow, options);
+              await fs.readFile(openPath[0], 'utf-8', async (err, data) => {
+                if (err) throw err;
+                const win = electron.BrowserWindow.getFocusedWindow();
+                await ipc.callRenderer(win, 'open', data);
+              });
+            }
           },
+          {
+            label: '&Save',
+            accelerator: 'Ctrl+S',
+            click: async () => {
+              const win = electron.BrowserWindow.getFocusedWindow();
+              await ipc.callRenderer(win, 'save');
+            }
+          },
+          {
+            label: '&Save All',
+            accelerator: 'Ctrl+Shift+S',
+            click: async () => {
+              const win = electron.BrowserWindow.getFocusedWindow();
+              await ipc.callRenderer(win, 'save all');
+            }
+          },
+          {
+            label: '&Export',
+            click: async () => {
+              //open a new dialoge here
+              try {
+                const win = electron.BrowserWindow.getFocusedWindow();
+                let notes = await ipc.callRenderer(win, 'export');
+                if (!notes) {
+                  //if none is selected
+                  const errorOptions = {
+                    type: 'error',
+                    message: 'No note selected!'
+                  };
+                  dialog.showMessageBox(this.mainWindow, errorOptions);
+                } else {
+                  let options = {
+                    title: 'Export As...',
+                    buttonLabel: 'export',
+                    defaultPath: 'C:\\Untitled',
+                    filters: [
+                      { name: 'Markdown', extensions: ['md'] },
+                      { name: 'Text', extensions: ['txt'] },
+                      { name: 'Custom File Type', extensions: ['as'] },
+                      { name: 'All Files', extensions: ['*'] }
+                    ]
+                  };
+                  let filePath = dialog.showSaveDialog(
+                    this.mainWindow,
+                    options
+                  );
+                  // console.log(marked(notes.notes, {headerIds: false}), 'notes marked');//this saves as html but we can do that later on
+
+                  fs.writeFileSync(filePath, notes.notes, 'binary', err => {
+                    console.error(err);
+                  });
+                  console.log('Success in writing file');
+                }
+              } catch (err) {
+                console.error(err);
+              }
+            }
+          },
+          { type: 'separator' },
           {
             label: '&Close',
             accelerator: 'Ctrl+W',
