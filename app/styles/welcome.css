@@ -1,0 +1,46 @@
+.logo {
+  width: 43%;
+  max-width: 295px;
+}
+
+.logo img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#welcomeContainer h1 {
+  margin: 0;
+}
+
+#welcomeContainer {
+  width: 100%;
+  background: var(--darkBlue);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 2em;
+  padding: 0 2em;
+}
+
+#welcomeContainer * {
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+#welcome-notes {
+  text-align: center;
+  border: black solid 1px;
+  padding: 0.6em 3em;
+  border-radius: 2em;
+}
+
+.CodeMirror {
+  padding: 1.5em;
+}
+
+.view-pane {
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 0.5em;
+}

@@ -24,7 +24,7 @@ export default function counter(state = initialState, action: Action) {
   switch (action.type) {
     case DELETE_NOTE:
       newList = newList.filter(x => x.id !== action.id);
-      return { ...state, allNotes: newList };
+      return { ...state, allNotes: newList, selectedNote: {} };
     case SAVE_ALL:
       delete newSelected.save;
       return {

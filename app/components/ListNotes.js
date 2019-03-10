@@ -71,18 +71,35 @@ class ListNotes extends React.Component {
     // console.log(this.props.allNotes, 'allnotes render from list notes');
     return (
       <div id="list-notes">
-        <h1>Them Notes</h1>
+        <h2>[ Notes ]</h2>
+        <hr />
         <div>
-          <div onClick={this.createNew}>Create New</div>
+          <div onClick={this.createNew} className="list-hover">
+            <i className="fas fa-plus-circle" />
+            <p className="list-padding">Create New</p>
+          </div>
+          <hr />
           {this.props.allNotes
             .map(x => {
               return (
-                <div key={x.date}>
-                  <div onClick={() => this.handleClick(x.date)}>
-                    {x.notes.slice(0, 15)}...{x.save ? '*' : ''}
+                <React.Fragment key={x.date}>
+                  <div className="list-notes">
+                    <i
+                      onClick={() => this.handleDelete(x.id)}
+                      title="delete"
+                      className="fas fa-trash"
+                    />
+                    <div
+                      className="list-hover"
+                      onClick={() => this.handleClick(x.date)}
+                    >
+                      <p>
+                        {x.notes.slice(0, 15)}...{x.save ? '*' : ''}
+                      </p>
+                    </div>
                   </div>
-                  <div onClick={() => this.handleDelete(x.id)}>delete</div>
-                </div>
+                  <hr />
+                </React.Fragment>
               );
             })
             .reverse()}
