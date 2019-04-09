@@ -1,5 +1,5 @@
 <h1>FroNotes</h1>
-<p>A simple markdown note taking app create with electron</p>
+<p>A simple markdown note taking app create with electron, react, and redux</p>
 <img src="./app/img/one.png"
      alt="example 1"/>
 <img src="./app/img/two.png"
